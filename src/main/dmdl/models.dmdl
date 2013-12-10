@@ -1,0 +1,58 @@
+
+"商品マスタ"
+@directio.csv(
+    has_header = TRUE
+)
+item_master = {
+	"商品ID"
+    @directio.csv.field(name = "商品ID")
+	item_id : INT;
+
+	"商品名"
+    @directio.csv.field(name = "商品名")
+	item_name : TEXT;
+};
+
+"売上明細"
+@directio.csv(
+    has_header = TRUE
+)
+sales_detail = {
+	"明細ID"
+    @directio.csv.field(name = "明細ID")
+	sales_id : INT;
+
+	"商品ID"
+    @directio.csv.field(name = "商品ID")
+	item_id : INT;
+
+    "売上数"
+    @directio.csv.field(name = "売上数")
+    sales_number : INT;
+};
+
+"結合データ"
+@directio.csv(
+    has_header = TRUE
+)
+joined joined_sales_detail = item_master -> {
+	"商品ID"
+    @directio.csv.field(name = "商品ID")
+	item_id -> item_id;
+
+	"商品名"
+    @directio.csv.field(name = "商品名")
+	item_name -> item_name;
+} % item_id + sales_detail -> {
+	"明細ID"
+    @directio.csv.field(name = "明細ID")
+	sales_id -> sales_id;
+
+	"商品ID"
+    @directio.csv.field(name = "商品ID")
+	item_id -> item_id;
+
+    "売上数"
+    @directio.csv.field(name = "売上数")
+    sales_number -> sales_number;
+} % item_id;
